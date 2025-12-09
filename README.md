@@ -3,19 +3,19 @@
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A comprehensive, production-ready library for preprocessing tabular data in machine learning pipelines. Designed with a focus on **train/test consistency** and **extensibility**.
+This repository contains the source code for the automated tabular preprocessing pipeline from the IEEE-EMBC conference paper "The Impact of White-Box Adversarial Attacks on Group Fairness in Machine Learning Models for Prostate Cancer Diagnosis".
 
 ## Features
 
-- **Missing Value Handling**: Configurable threshold-based column dropping and imputation (mean/median for numerical, mode for categorical)
-- **Categorical Encoding**: One-hot encoding and factorize (label) encoding with train/test alignment
-- **Feature Scaling**: StandardScaler, MinMaxScaler, and RobustScaler support
-- **Feature Selection**: Tree-based importance and F-statistic (ANOVA) methods
-- **Outlier Removal**: IQR-based outlier detection with configurable multiplier
-- **Correlation Filtering**: Remove highly correlated features
-- **Low Variance Filtering**: Remove features with near-zero variance
-- **Data Augmentation**: SMOTE, CTGAN, and TVAE for imbalanced datasets
-- **Train/Test Consistency**: All transformations learned on training data are consistently applied to test data
+- **Missing Value Handling**: Drops missing values above a given threshold and performs imputation (mean/median for numerical, mode for categorical) for the values below the threshold
+- **Categorical Encoding**: Performs One-hot encoding and factorize (label) encoding with in train/test splits.
+- **Feature Scaling**: StandardScaler, MinMaxScaler, and RobustScaler.
+- **Feature Selection**: Tree-based importance (ExtraTreesClassifier) and F-statistic (ANOVA) methods (f_classif).
+- **Outlier Removal**: Performs outlier detection and removal using IQR.
+- **Correlation Filtering**: Removes highly correlated features.
+- **Low Variance Filtering**: Remove features that have variance close to zero.
+- **Data Augmentation**: Performs data augmentation using SMOTE, CTGAN, and TVAE.
+- **Train/Test Consistency**: Applies the transformations learned from the training data to test data.
 
 ## Installation
 
