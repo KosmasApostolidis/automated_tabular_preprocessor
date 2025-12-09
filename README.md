@@ -185,36 +185,6 @@ print(preprocessor.cat_encoding_mappings)   # Categorical encoding maps
 - imbalanced-learn >= 0.9.0
 - ctgan >= 0.7.0
 
-## Project Structure
-
-```
-tabular-preprocessor/
-├── tabular_preprocessor/
-│   ├── __init__.py
-│   └── preprocessor.py
-├── tests/
-│   ├── __init__.py
-│   └── test_preprocessor.py
-├── examples/
-│   └── basic_usage.py
-├── docs/
-├── requirements.txt
-├── setup.py
-├── LICENSE
-├── CHANGELOG.md
-└── README.md
-```
-
-## Contributing
-
-Contributions are available! You can submit your contribution by making a Pull Request.
-
-1. Fork the repository
-2. Create your branch named "test_branch" (`git checkout -b test_branch/NewFeature`)
-3. Commit your changes (`git commit -m 'Add NewFeature'`)
-4. Push to the branch (`git push origin test_branch/NewFeature`)
-5. Open a Pull Request
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -226,7 +196,7 @@ If you use this library in your research, please cite:
 ```bibtex
 @software{automated_tabular_preprocessor,
   author = {Kosmas Apostolidis},
-  title = {Automated Tabular Preprocessing},
+  title = {Automated Tabular Preprocessor},
   year = {2025},
   url = {https://github.com/Kosmas Apostolidis/automated_tabular_preprocessor}
 }
