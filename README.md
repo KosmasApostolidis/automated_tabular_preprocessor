@@ -8,14 +8,14 @@ This repository contains the source code for the automated tabular preprocessing
 ## Features
 
 - **Missing Value Handling**: Drops missing values above a given threshold and performs imputation (mean/median for numerical, mode for categorical) for the values below the threshold
-- **Categorical Encoding**: Performs One-hot encoding and factorize (label) encoding with in train/test splits.
-- **Feature Scaling**: StandardScaler, MinMaxScaler, and RobustScaler.
-- **Feature Selection**: Tree-based importance (ExtraTreesClassifier) and F-statistic (ANOVA) methods (f_classif).
-- **Outlier Removal**: Performs outlier detection and removal using IQR.
-- **Correlation Filtering**: Removes highly correlated features.
-- **Low Variance Filtering**: Remove features that have variance close to zero.
-- **Data Augmentation**: Performs data augmentation using SMOTE, CTGAN, and TVAE.
-- **Train/Test Consistency**: Applies the transformations learned from the training data to test data.
+- **Categorical Encoding**: Performs One-hot encoding and factorize (label) encoding with in train/test splits
+- **Feature Scaling**: StandardScaler, MinMaxScaler, and RobustScaler
+- **Feature Selection**: Tree-based importance (ExtraTreesClassifier) and F-statistic (ANOVA) methods (f_classif)
+- **Outlier Removal**: Performs outlier detection and removal using IQR
+- **Correlation Filtering**: Removes highly correlated features
+- **Low Variance Filtering**: Remove features that have variance close to zero
+- **Data Augmentation**: Performs data augmentation using SMOTE, CTGAN, and TVAE
+- **Train/Test Consistency**: Applies the transformations learned from the training data to test data
 
 ## Installation
 
@@ -72,11 +72,11 @@ from tabular_preprocessor import AugmentedDataPreprocessor
 
 # SMOTE augmentation
 preprocessor = AugmentedDataPreprocessor(
-    df=df_train,
-    target_column="label",
-    strategy="smote",  # or "ctgan", "tvae"
-    numberical_scaler="standard",
-    random_state=42
+    df                = df_train,
+    target_column     = "label",
+    strategy          = "smote",  # or "ctgan", "tvae"
+    numberical_scaler = "standard",
+    random_state      = 42
 )
 
 preprocessor._run_preprocessing_pipeline(is_train=True)
@@ -113,17 +113,17 @@ Inherits all parameters from `TabularDataPreprocessor`, plus:
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `strategy` | str | "smote" | Augmentation strategy: "smote", "ctgan", "tvae" |
+| `strategy` | str | "smote" | The dataset augmentation strategy to be performed: "smote", "ctgan" or "tvae" |
 
 ## Pipeline Steps
 
 The preprocessing pipeline executes in the following order:
 
-1. **Drop User-Specified Columns** - Remove unwanted columns
+1. **Drop User-Specified Columns** - Remove unnecessary columns from the dataset
 2. **Drop Duplicates** - Remove duplicate rows
-3. **Handle Missing Values** - Drop high-missing columns, impute remaining
+3. **Handle Missing Values** - Drops missing columns above a given threshold and imputes the remaining
 4. **Replace Placeholder Values** - Replace special values with mode
-5. **Remove Outliers** (train only) - IQR-based outlier removal
+5. **Remove Outliers** (train only) - Performs outlier removal based on the IQR method
 6. **Encode Categorical Features** - One-hot or label encoding
 7. **Encode Target Column** - Label or one-hot (for neural networks)
 8. **Data Augmentation** (train only, AugmentedDataPreprocessor) - SMOTE/CTGAN/TVAE
@@ -137,18 +137,18 @@ The preprocessing pipeline executes in the following order:
 ```python
 # Tree-based feature importance
 preprocessor = TabularDataPreprocessor(
-    df=df_train,
-    target_column="label",
-    number_of_top_k_features=15,
-    feature_selection_method="trees"
+    df                        = df_train,
+    target_column             = "label",
+    number_of_top_k_features  = 15,
+    feature_selection_method  = "trees"
 )
 
-# ANOVA F-statistic
+# ANOVA F-statistic feature importance
 preprocessor = TabularDataPreprocessor(
-    df=df_train,
-    target_column="label",
-    number_of_top_k_features=15,
-    feature_selection_method="f_classif"
+    df                        = df_train,
+    target_column             = "label",
+    number_of_top_k_features  = 15,
+    feature_selection_method  = "f_classif"
 )
 ```
 
@@ -157,9 +157,9 @@ preprocessor = TabularDataPreprocessor(
 ```python
 # One-hot encode target for multi-class neural networks
 preprocessor = TabularDataPreprocessor(
-    df=df_train,
-    target_column="label",
-    model_type="neural_network"  # Target will be one-hot encoded
+    df            = df_train,
+    target_column = "label",
+    model_type    = "neural_network"  # Target will be one-hot encoded
 )
 ```
 
@@ -207,12 +207,12 @@ tabular-preprocessor/
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are available! You can submit your contribution by making a Pull Request.
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create your branch named "test_branch" (`git checkout -b test_branch/NewFeature`)
+3. Commit your changes (`git commit -m 'Add NewFeature'`)
+4. Push to the branch (`git push origin test_branch/NewFeature`)
 5. Open a Pull Request
 
 ## License
@@ -231,9 +231,3 @@ If you use this library in your research, please cite:
   url = {https://github.com/yourusername/tabular-preprocessor}
 }
 ```
-
-## Acknowledgments
-
-- [scikit-learn](https://scikit-learn.org/) for preprocessing utilities
-- [imbalanced-learn](https://imbalanced-learn.org/) for SMOTE implementation
-- [CTGAN](https://github.com/sdv-dev/CTGAN) for synthetic data generation
