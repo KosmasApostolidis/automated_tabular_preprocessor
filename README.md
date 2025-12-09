@@ -68,7 +68,7 @@ df_test_processed = preprocessor.df
 ### With Data Augmentation (for Imbalanced Data)
 
 ```python
-from tabular_preprocessor import AugmentedDataPreprocessor
+from automated_tabular_preprocessor import AugmentedDataPreprocessor
 
 # SMOTE augmentation
 preprocessor = AugmentedDataPreprocessor(
