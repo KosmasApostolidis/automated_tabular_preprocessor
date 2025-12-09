@@ -47,12 +47,12 @@ df_test = pd.read_csv("test.csv")
 preprocessor = TabularDataPreprocessor(
     df                        = df_train,
     target_column             = "label",
-    cols_to_drop              =["id", "timestamp"],
-    numberical_scaler         ="standard",
-    categorical_encoder="onehot",
-    number_of_top_k_features=10,
-    feature_selection_method="trees",
-    random_state=42
+    cols_to_drop              = ["id", "timestamp"],
+    numberical_scaler         = "standard",
+    categorical_encoder       = "onehot",
+    number_of_top_k_features  = 10,
+    feature_selection_method  = "trees",
+    random_state              = 42
 )
 
 # Preprocess training data (learns parameters)
