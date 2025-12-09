@@ -37,7 +37,7 @@ pip install -r requirements.txt
 
 ```python
 import pandas as pd
-from tabular_preprocessor import TabularDataPreprocessor
+from automated_tabular_preprocessor import TabularDataPreprocessor
 
 # Load your data
 df_train = pd.read_csv("train.csv")
