@@ -6,16 +6,16 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name="tabular-preprocessor",
     version="0.1.0",
-    author="Your Name",
-    author_email="your.email@example.com",
-    description="A comprehensive library for preprocessing tabular data in ML pipelines",
+    author="Kosmas Apostolidis",
+    author_email="cosmasapostolidis@gmail.com",
+    description="A tool for preprocessing tabular datasets",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/tabular-preprocessor",
+    url="https://github.com/KosmasApostolidis/automated_tabular_preprocessor",
     project_urls={
-        "Bug Tracker": "https://github.com/yourusername/tabular-preprocessor/issues",
-        "Documentation": "https://github.com/yourusername/tabular-preprocessor#readme",
-        "Source Code": "https://github.com/yourusername/tabular-preprocessor",
+        "Bug Tracker": "https://github.com/KosmasApostolidis/automated_tabular_preprocessor/issues",
+        "Documentation": "https://github.com/KosmasApostolidis/automated_tabular_preprocessor#readme",
+        "Source Code": "https://github.com/KosmasApostolidis/automated_tabular_preprocessor",
     },
     packages=find_packages(),
     classifiers=[
