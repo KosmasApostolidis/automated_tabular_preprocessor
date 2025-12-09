@@ -224,10 +224,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you use this library in your research, please cite:
 
 ```bibtex
-@software{tabular_preprocessor,
-  author = {Your Name},
+@software{automated_tabular_preprocessor,
+  author = {Kosmas Apostolidis},
   title = {Automated Tabular Preprocessing},
   year = {2025},
-  url = {https://github.com/yourusername/tabular-preprocessor}
+  url = {https://github.com/Kosmas Apostolidis/automated_tabular_preprocessor}
 }
 ```
