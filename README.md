@@ -21,8 +21,8 @@ A comprehensive, production-ready library for preprocessing tabular data in mach
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/tabular-preprocessor.git
-cd tabular-preprocessor
+git clone https://github.com/KosmasApostolidis/automated_tabular_preprocessor.git
+cd automated_tabular_preprocessor
 
 # Install in development mode
 pip install -e .
@@ -45,10 +45,10 @@ df_test = pd.read_csv("test.csv")
 
 # Initialize preprocessor
 preprocessor = TabularDataPreprocessor(
-    df=df_train,
-    target_column="label",
-    cols_to_drop=["id", "timestamp"],
-    numberical_scaler="standard",
+    df                        = df_train,
+    target_column             = "label",
+    cols_to_drop              =["id", "timestamp"],
+    numberical_scaler         ="standard",
     categorical_encoder="onehot",
     number_of_top_k_features=10,
     feature_selection_method="trees",
