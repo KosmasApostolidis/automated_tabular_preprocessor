@@ -3,7 +3,7 @@
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This repository contains the source code for the automated tabular preprocessing pipeline from the IEEE-EMBC conference paper "The Impact of White-Box Adversarial Attacks on Group Fairness in Machine Learning Models for Prostate Cancer Diagnosis".
+Below you can find an extensive description of the automated tabular preprocessing tool with example usage.
 
 ## Features
 
