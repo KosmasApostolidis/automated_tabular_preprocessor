@@ -13,8 +13,8 @@ from .preprocessor import (
 )
 
 __version__ = "0.1.0"
-__author__ = "Your Name"
-__email__ = "your.email@example.com"
+__author__ = "Kosmas Apostolidis"
+__email__ = "cosmasapostolidis@gmail.com"
 
 __all__ = [
     "AbstractPreprocessor",

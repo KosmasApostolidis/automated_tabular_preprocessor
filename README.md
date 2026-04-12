@@ -48,7 +48,7 @@ preprocessor = TabularDataPreprocessor(
     df                        = df_train,
     target_column             = "label",
     cols_to_drop              = ["id", "timestamp"],
-    numberical_scaler         = "standard",
+    numerical_scaler         = "standard",
     categorical_encoder       = "onehot",
     number_of_top_k_features  = 10,
     feature_selection_method  = "trees",
@@ -56,12 +56,12 @@ preprocessor = TabularDataPreprocessor(
 )
 
 # Preprocess training data (learns parameters)
-preprocessor._run_preprocessing_pipeline(is_train=True)
+preprocessor.run_preprocessing_pipeline(is_train=True)
 df_train_processed = preprocessor.df
 
 # Preprocess test data (applies learned parameters)
 preprocessor.df = df_test
-preprocessor._run_preprocessing_pipeline(is_train=False)
+preprocessor.run_preprocessing_pipeline(is_train=False)
 df_test_processed = preprocessor.df
 ```
 
@@ -75,11 +75,11 @@ preprocessor = AugmentedDataPreprocessor(
     df                = df_train,
     target_column     = "label",
     strategy          = "smote",  # or "ctgan", "tvae"
-    numberical_scaler = "standard",
+    numerical_scaler = "standard",
     random_state      = 42
 )
 
-preprocessor._run_preprocessing_pipeline(is_train=True)
+preprocessor.run_preprocessing_pipeline(is_train=True)
 df_augmented = preprocessor.df
 ```
 
@@ -95,7 +95,7 @@ df_augmented = preprocessor.df
 | `value_to_replace` | any | None | Placeholder value to replace with mode |
 | `missing_values_threshold` | float | 0.4 | Drop columns with missing ratio above this |
 | `random_state` | int | 42 | Random seed for reproducibility |
-| `numberical_scaler` | str | "standard" | Scaler type: "standard", "minmax", "robust" |
+| `numerical_scaler` | str | "standard" | Scaler type: "standard", "minmax", "robust" |
 | `categorical_encoder` | str | "onehot" | Encoder: "onehot", "factorize" |
 | `number_of_top_k_features` | int | 0 | Number of features to select (0 = all) |
 | `feature_selection_method` | str | "trees" | Method: "trees", "f_classif" |
@@ -127,8 +127,10 @@ The preprocessing pipeline executes in the following order:
 6. **Encode Categorical Features** - One-hot or label encoding
 7. **Encode Target Column** - Label or one-hot (for neural networks)
 8. **Data Augmentation** (train only, AugmentedDataPreprocessor) - SMOTE/CTGAN/TVAE
-9. **Feature Selection** - Select top-K features
-10. **Scale Numerical Features** - Apply chosen scaler
+9. **Remove Highly Correlated Features** (optional) - Drops features with correlation > 0.8
+10. **Remove Low Variance Features** (optional) - Drops near-zero variance features
+11. **Feature Selection** - Select top-K features
+12. **Scale Numerical Features** - Apply chosen scaler
 
 ## Advanced Usage
 
@@ -167,7 +169,7 @@ preprocessor = TabularDataPreprocessor(
 
 ```python
 # After fitting on training data
-preprocessor._run_preprocessing_pipeline(is_train=True)
+preprocessor.run_preprocessing_pipeline(is_train=True)
 
 # Access learned transformations
 print(preprocessor.scaler_object)           # Fitted scaler
@@ -198,6 +200,6 @@ If you use this library in your research, please cite:
   author = {Kosmas Apostolidis},
   title = {Automated Tabular Preprocessor},
   year = {2025},
-  url = {https://github.com/Kosmas Apostolidis/automated_tabular_preprocessor}
+  url = {https://github.com/KosmasApostolidis/automated_tabular_preprocessor}
 }
 ```
