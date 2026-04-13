@@ -32,6 +32,7 @@ class AbstractPreprocessor(ABC):
         self.scaler_object            = None
         self.columns_to_keep          = None
         self.cat_encoding_mappings    = {}
+        self.high_missing_cols_dropped = []
 
     def _drop_duplicates(self):
         print("\n--- Dropping Duplicates ---")
@@ -55,6 +56,7 @@ class AbstractPreprocessor(ABC):
         if is_train:
             if drop_high_missing:
                 cols_to_drop = [c for c in cols_with_missing if missing_percentage[c] > self.missing_values_threshold]
+                self.high_missing_cols_dropped = cols_to_drop
                 if cols_to_drop:
                     self.df.drop(columns=cols_to_drop, inplace=True)
                     print(f"Dropped columns (> threshold): {cols_to_drop}")
@@ -68,6 +70,12 @@ class AbstractPreprocessor(ABC):
                     if not self.df[col].mode().empty:
                         val = self.df[col].mode()[0]
                         self.imputation_values[col] = val
+        else:
+            if self.high_missing_cols_dropped:
+                cols_to_drop = [c for c in self.high_missing_cols_dropped if c in self.df.columns]
+                if cols_to_drop:
+                    self.df.drop(columns=cols_to_drop, inplace=True)
+                    print(f"Dropped columns (from training): {cols_to_drop}")
 
         for col, val in self.imputation_values.items():
             if col in self.df.columns and self.df[col].isnull().any():
@@ -191,6 +199,7 @@ class TabularDataPreprocessor(AbstractPreprocessor):
                 self.df = self.df[self.columns_after_encoding]
 
         elif self.categorical_encoder == 'factorize':
+             self.encoded_categorical_cols = list(cat_cols)
              for col in cat_cols:
                 if is_train:
                     codes, uniques = pd.factorize(self.df[col])
@@ -199,6 +208,9 @@ class TabularDataPreprocessor(AbstractPreprocessor):
                 else:
                     mapping = self.cat_encoding_mappings.get(col, {})
                     self.df[col] = self.df[col].map(mapping).fillna(-1).astype(int)
+
+             if is_train:
+                 self.columns_after_encoding = self.df.columns.tolist()
 
         return self
 
@@ -314,7 +326,8 @@ class TabularDataPreprocessor(AbstractPreprocessor):
 
         if is_train:
             protected = set(self.final_target_cols) | {self.target_column}
-            candidates = [col for col in self.df.columns if col not in protected]
+            numeric_cols = self.df.select_dtypes(include=np.number).columns
+            candidates = [col for col in numeric_cols if col not in protected]
             self.low_variance_cols = [col for col in candidates if self.df[col].var() < threshold]
             if self.low_variance_cols:
                 self.df.drop(columns=self.low_variance_cols, inplace=True)
@@ -372,6 +385,11 @@ class TabularDataPreprocessor(AbstractPreprocessor):
             if self.numerical_scaler == 'standard': self.scaler_object = StandardScaler()
             elif self.numerical_scaler == 'minmax': self.scaler_object = MinMaxScaler()
             elif self.numerical_scaler == 'robust': self.scaler_object = RobustScaler()
+            else:
+                raise ValueError(
+                    f"Unknown numerical_scaler '{self.numerical_scaler}'. "
+                    f"Valid options: 'standard', 'minmax', 'robust'."
+                )
 
             self.df[cols_to_scale] = self.scaler_object.fit_transform(self.df[cols_to_scale])
         else:
@@ -395,6 +413,8 @@ class TabularDataPreprocessor(AbstractPreprocessor):
 
         self._encode_target_column(is_train=is_train)
 
+        self._post_target_encoding_hook(is_train=is_train)
+
         if self.remove_highly_correlated:
             self._remove_highly_correlated_features(is_train=is_train)
 
@@ -406,11 +426,19 @@ class TabularDataPreprocessor(AbstractPreprocessor):
         self._scale_numerical_features(is_train=is_train)
         return self
 
+    def _post_target_encoding_hook(self, is_train=True):
+        """Hook for subclasses to inject steps after target encoding."""
+        pass
+
 class AugmentedDataPreprocessor(TabularDataPreprocessor):
     def __init__(self, *args, strategy='smote', **kwargs):
         super().__init__(*args, **kwargs)
         self.strategy = strategy
         print(f"Initialized Augmented preprocessor with strategy: {self.strategy.upper()}.")
+
+    def _post_target_encoding_hook(self, is_train=True):
+        if is_train:
+            self._augment_data()
 
     def _augment_data(self):
         print(f"\n--- Augmenting Data using {self.strategy.upper()} ---")
@@ -441,34 +469,4 @@ class AugmentedDataPreprocessor(TabularDataPreprocessor):
         if self.strategy in ['smote', 'ctgan', 'tvae']:
             print("Class distribution after augmentation:")
             print(self.df[self.target_column].value_counts())
-        return self
-
-    def run_preprocessing_pipeline(self, is_train=True):
-        self._drop_columns()
-        self._drop_duplicates()
-        self._handle_missing_values(is_train=is_train)
-
-        if self.value_to_replace is not None:
-            self._replace_value_with_mode(is_train=is_train)
-
-        if is_train and self.remove_outliers:
-            self._remove_outliers_iqr()
-
-        if self.encode_categorical:
-            self._encode_categorical_features(is_train=is_train)
-
-        self._encode_target_column(is_train=is_train)
-
-        if is_train:
-            self._augment_data()
-
-        if self.remove_highly_correlated:
-            self._remove_highly_correlated_features(is_train=is_train)
-
-        if self.remove_low_variance:
-            self._remove_low_variance_features(is_train=is_train)
-
-        self._select_top_k_features(is_train=is_train)
-        self._scale_numerical_features(is_train=is_train)
-
         return self
